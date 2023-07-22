@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:handyman_admin_app/Screens/Home/home_screen.dart';
+import 'package:handyman_admin_app/Screens/Login/login_screen.dart';
 import '../../../constants.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -16,7 +16,7 @@ class SplashContinuation extends StatelessWidget {
           'assets/images/app_logo.png',
           color: white,
         ),
-        nextScreen: const HomeScreen(),
+        nextScreen: const LoginScreen(),
         splashTransition: SplashTransition.rotationTransition,
         pageTransitionType: PageTransitionType.leftToRightWithFade,
         duration: 3000,

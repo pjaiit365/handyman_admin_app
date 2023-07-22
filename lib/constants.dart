@@ -1,6 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:handyman_admin_app/Screens/Handyman%20Job%20Upload/handyman_job_upload_screen.dart';
+import 'package:handyman_admin_app/Screens/Users/users_screen.dart';
+
+import 'Screens/Category/category_screen.dart';
+import 'Screens/Customer Job Upload/customer_job_upload_screen.dart';
 
 late double width;
 late double height;
@@ -28,3 +33,28 @@ Color complementaryRed = Color(0xffBD3A32);
 
 double screenWidth = width / 390;
 double screenHeight = height / 844;
+
+bool isRememberMeClicked = false;
+bool loginTextFieldError = false;
+bool forgotPasswordEmailError = false;
+
+String loggedInUserId = '';
+
+List<String> dashboardItemTitle = [
+  'User',
+  'Category',
+  'Customer Job Upload',
+  'Handyman Job Upload'
+];
+List<IconData> dashboardItemIcon = [
+  Icons.person_outline_rounded,
+  Icons.category_rounded,
+  Icons.work_history_rounded,
+  Icons.handyman_rounded,
+];
+List<Widget> dashboardItemScreen = [
+  UsersScreen(),
+  CategoryScreen(),
+  CustomerJobUploadScreen(),
+  HandymanJobUploadScreen(),
+];

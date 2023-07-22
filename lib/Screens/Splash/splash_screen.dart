@@ -9,6 +9,9 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    width = size.width;
+    height = size.height;
     return Scaffold(
       body: AnimatedSplashScreen(
         splashIconSize: 700,

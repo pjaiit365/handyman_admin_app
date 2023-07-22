@@ -1,0 +1,1 @@
+enum BottomNavState { dashboard, profile }
