@@ -14,171 +14,132 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future delete() async {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(allUsers[index].id)
-          .delete();
-      final document = await FirebaseFirestore.instance
-          .collection('profile')
-          .where('User ID', isEqualTo: allUsers[index].id)
-          .get();
-
-      if (document.docs.isNotEmpty) {
-        final docID = document.docs.single.id;
-        await FirebaseFirestore.instance
-            .collection('profile')
-            .doc(docID)
-            .delete();
-      }
-
-      final custUploadDoc = await FirebaseFirestore.instance
-          .collection('Customer Job Upload')
-          .where('Customer ID', isEqualTo: allUsers[index].id)
-          .get();
-
-      if (custUploadDoc.docs.isNotEmpty) {
-        for (var document in custUploadDoc.docs) {
-          final docID = document.id;
-          await FirebaseFirestore.instance
-              .collection('Customer Job Upload')
-              .doc(docID)
-              .delete();
-        }
-      }
-
-      final handymanUploadDoc = await FirebaseFirestore.instance
-          .collection('Handyman Job Upload')
-          .where('Customer ID', isEqualTo: allUsers[index].id)
-          .get();
-
-      if (handymanUploadDoc.docs.isNotEmpty) {
-        for (var document in handymanUploadDoc.docs) {
-          final docID = document.id;
-          await FirebaseFirestore.instance
-              .collection('Handyman Job Upload')
-              .doc(docID)
-              .delete();
-        }
-      }
-
-      final bookmarkDoc = await FirebaseFirestore.instance
-          .collection('Bookmark')
-          .where('User ID', isEqualTo: allUsers[index].id)
-          .get();
-
-      if (bookmarkDoc.docs.isNotEmpty) {
-        final docID = document.docs.single.id;
-        await FirebaseFirestore.instance
-            .collection('Bookmark')
-            .doc(docID)
-            .delete();
-      }
-    }
-
+    ReadData readData = ReadData();
     void deleteUser(BuildContext context) {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(9),
-            ),
-            title: Center(
-              child: Text(
-                'Delete User',
-                style: TextStyle(
-                  color: primary,
-                  fontWeight: FontWeight.w500,
-                ),
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(9),
               ),
-            ),
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Are you sure you want to delete this user? ',
+              title: Center(
+                child: Text(
+                  'Delete User',
                   style: TextStyle(
-                    height: 1.4,
-                    color: black,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: 18 * screenHeight),
-                Text(
-                  'User: ${allUsers[index].email}',
-                  style: TextStyle(
-                    height: 1.4,
-                    color: red,
-                    fontSize: 17,
+                    color: primary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 50 * screenHeight),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      highlightColor: grey.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(5),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Ink(
-                        height: 39 * screenHeight,
-                        width: 129 * screenWidth,
-                        decoration: BoxDecoration(
-                          color: white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: screenWidth * 12.0),
-                          child: Center(
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(
-                                color: appointmentTimeColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
+              ),
+              content: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Are you sure you want to delete this user? ',
+                    style: TextStyle(
+                      height: 1.4,
+                      color: black,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 18 * screenHeight),
+                  Text(
+                    'User: ${allUsers[index].email}',
+                    style: TextStyle(
+                      height: 1.4,
+                      color: red,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 50 * screenHeight),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        highlightColor: grey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(5),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Ink(
+                          height: 39 * screenHeight,
+                          width: 129 * screenWidth,
+                          decoration: BoxDecoration(
+                            color: white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: screenWidth * 12.0),
+                            child: Center(
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(
+                                  color: appointmentTimeColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    VerticalDivider(
-                      color: semiGrey,
-                      width: 10,
-                      thickness: 10,
-                    ),
-                    InkWell(
-                      highlightColor: red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(5),
-                      onTap: delete,
-                      child: Ink(
-                        height: 39 * screenHeight,
-                        width: 129 * screenWidth,
-                        decoration: BoxDecoration(
-                          color: white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Center(
-                          child: Text('Yes, Delete',
-                              style: TextStyle(
-                                color: red,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
+                      VerticalDivider(
+                        color: semiGrey,
+                        width: 10,
+                        thickness: 10,
+                      ),
+                      InkWell(
+                        highlightColor: red.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(5),
+                        onTap: () {
+                          readData.delete(index);
+                          setState(() {
+                            Navigator.pop(
+                              context,
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.black45,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                content: const Center(
+                                  child: Text(
+                                    'User successfully deleted!',
+                                  ),
+                                ),
                               )),
+                            );
+                          });
+                        },
+                        child: Ink(
+                          height: 39 * screenHeight,
+                          width: 129 * screenWidth,
+                          decoration: BoxDecoration(
+                            color: white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                            child: Text('Yes, Delete',
+                                style: TextStyle(
+                                  color: red,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                )),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -196,7 +157,7 @@ class UserItem extends StatelessWidget {
           backgroundColor: red,
           foregroundColor: white,
           icon: Icons.delete_rounded,
-        )
+        ),
       ]),
       child: Container(
         height: 115 * screenHeight,
