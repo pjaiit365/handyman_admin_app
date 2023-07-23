@@ -1,13 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../Services/read_data.dart';
 import '../constants.dart';
 
-class UserItem extends StatelessWidget {
+class CategoryItem extends StatelessWidget {
   final int index;
-  const UserItem({
+  const CategoryItem({
     super.key,
     required this.index,
   });
@@ -26,7 +25,7 @@ class UserItem extends StatelessWidget {
               ),
               title: Center(
                 child: Text(
-                  'Delete User',
+                  'Delete Category',
                   style: TextStyle(
                     color: primary,
                     fontWeight: FontWeight.w500,
@@ -39,7 +38,7 @@ class UserItem extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Are you sure you want to delete this user? ',
+                    'Are you sure you want to delete this category? ',
                     style: TextStyle(
                       height: 1.4,
                       color: black,
@@ -49,7 +48,7 @@ class UserItem extends StatelessWidget {
                   ),
                   SizedBox(height: 18 * screenHeight),
                   Text(
-                    'User: ${allUsers[index].email}',
+                    'User: ${allCategories[index].categoryName}',
                     style: TextStyle(
                       height: 1.4,
                       color: red,
@@ -160,8 +159,8 @@ class UserItem extends StatelessWidget {
         ),
       ]),
       child: GestureDetector(
-        onTap: () {
-          userSelectedIndex = index;
+        onTap: (){
+          categorySelectedIndex = index;
         },
         child: Container(
           height: 115 * screenHeight,
@@ -185,7 +184,7 @@ class UserItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'User ID: ${allUsers[index].id}',
+                  'Category ID: ${allCategories[index].id}',
                   style: TextStyle(
                     color: appointmentTimeColor,
                     fontSize: 14,
@@ -203,32 +202,29 @@ class UserItem extends StatelessWidget {
                         SizedBox(
                           width: 260 * screenWidth,
                           child: Text(
-                            allUsers[index].email,
+                            allCategories[index].categoryName,
                             style: TextStyle(
                                 color: primary,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
                           ),
                         ),
                         SizedBox(height: 10 * screenHeight),
                         SizedBox(
-                          width: 260 * screenWidth,
+                          width: 300 * screenWidth,
                           child: Text(
-                            '${allUsers[index].firstName} ${allUsers[index].lastName}',
+                            '${allCategories[index].servicesProvided[0]},${allCategories[index].servicesProvided[1]},${allCategories[index].servicesProvided[3]}}',
                             style: TextStyle(
                                 color: appointmentTimeColor,
                                 fontSize: 17,
                                 fontWeight: FontWeight.w400),
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
                           ),
                         ),
                       ],
-                    ),
-                    Icon(
-                      allUsers[index].role == 'Regular Customer'
-                          ? Icons.work_history_rounded
-                          : Icons.handyman_rounded,
-                      color: primary,
-                      size: 35,
                     ),
                   ],
                 ),

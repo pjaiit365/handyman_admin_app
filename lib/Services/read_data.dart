@@ -1,15 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:handyman_admin_app/Models/category.dart';
+import 'package:handyman_admin_app/Models/customer_job_upload.dart';
+import 'package:handyman_admin_app/Models/handyman_job_upload.dart';
 import 'package:handyman_admin_app/Models/users.dart';
 import 'package:handyman_admin_app/constants.dart';
 
 List<dynamic> allUsers = [];
+List<dynamic> allCategories = [];
+List<dynamic> allCustomerJobUpload = [];
+List<dynamic> allHandymanJobUpload = [];
 
 class ReadData {
   Future getUserData() async {
     allUsers.clear();
-    print(loggedInUserId);
+
     try {
       final querySnapshot = await FirebaseFirestore.instance
           .collection('users')
@@ -28,6 +33,160 @@ class ReadData {
           );
 
           allUsers.add(userData);
+        }
+      }
+    } on FirebaseException catch (e) {
+      print(e.toString());
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
+  Future getCategoryData() async {
+    allCategories.clear();
+
+    try {
+      final querySnapshot =
+          await FirebaseFirestore.instance.collection('Category').get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        for (var document in querySnapshot.docs) {
+          final documentData = document.data();
+          final categoryData = CategoryData(
+            id: documentData['Category ID'],
+            categoryName: documentData['Category Name'],
+            servicesProvided: documentData['Services Provided'],
+          );
+
+          allCategories.add(categoryData);
+        }
+      }
+    } on FirebaseException catch (e) {
+      print(e.toString());
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
+  Future getAllCustomerJobUploads() async {
+    allCustomerJobUpload.clear();
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('Customer Job Upload')
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        for (var document in querySnapshot.docs) {
+          final documentData = document.data();
+          final deadline = documentData['Job Details']['Deadline'];
+
+          final deadlineDay = '${deadline[0]}${deadline[1]}';
+          final deadlineMonth = '${deadline[3]}${deadline[4]}';
+          final deadlineYear =
+              '${deadline[6]}${deadline[7]}${deadline[8]}${deadline[9]}';
+          var status = '';
+          final dateNow = DateTime.now();
+          if (int.parse(deadlineYear) < dateNow.year) {
+            status = 'Expired';
+          } else if (int.parse(deadlineMonth) < dateNow.month) {
+            status = 'Expired';
+          } else if (int.parse(deadlineDay) < dateNow.day) {
+            status = 'Expired';
+          } else {
+            status = 'Active';
+          }
+          final jobUploadData = CustomerJobUploadData(
+              status: status,
+              customerID: documentData['Customer ID'],
+              portfolio: documentData['Work Detail & Rating']['Portfolio'],
+              jobUploadId: documentData['Job ID'],
+              serviceProvided: documentData['Service Information']
+                  ['Service Provided'],
+              seenBy: documentData['Seen By'],
+              deadlineDay: deadlineDay,
+              deadlineMonth: deadlineMonth,
+              deadlineYear: deadlineYear,
+              serviceCat: documentData['Service Information']
+                  ['Service Category'],
+              charge: documentData['Service Information']['Charge'].toString(),
+              chargeRate: documentData['Service Information']['Charge Rate'],
+              rating: documentData['Work Detail & Rating']['Rating'],
+              houseNum: documentData['Address Information']['House Number'],
+              region: documentData['Address Information']['Region'],
+              town: documentData['Address Information']['Street'],
+              street: documentData['Address Information']['Street'],
+              portfolioOption: documentData['Optional']['Portfolio Present'],
+              referenceOption: documentData['Optional']['References Present'],
+              expertise: documentData['Service Information']['Expertise']);
+
+          allCustomerJobUpload.add(jobUploadData);
+        }
+      }
+    } on FirebaseException catch (e) {
+      print(e.toString());
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
+  Future getAllHandymanJobUploads() async {
+    allHandymanJobUpload.clear();
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('Handyman Job Upload')
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        for (var document in querySnapshot.docs) {
+          final documentData = document.data();
+          final deadline = documentData['Deadline'];
+
+          final deadlineDay = '${deadline[0]}${deadline[1]}';
+          final deadlineMonth = '${deadline[3]}${deadline[4]}';
+          final deadlineYear =
+              '${deadline[6]}${deadline[7]}${deadline[8]}${deadline[9]}';
+          var status = '';
+          final dateNow = DateTime.now();
+          if (int.parse(deadlineYear) < dateNow.year) {
+            status = 'Expired';
+          } else if (int.parse(deadlineMonth) < dateNow.month) {
+            status = 'Expired';
+          } else if (int.parse(deadlineDay) < dateNow.day) {
+            status = 'Expired';
+          } else {
+            status = 'Active';
+          }
+
+          final jobUploadData = HandymanJobUploadData(
+              experience: documentData['Work Experience & Certification']
+                  ['Experience'],
+              certification: documentData['Work Experience & Certification']
+                  ['Certification'],
+              references: documentData['Work Experience & Certification']
+                  ['References'],
+              status: status,
+              customerID: documentData['Customer ID'],
+              portfolio: documentData['Work Experience & Certification']
+                  ['Portfolio'],
+              jobUploadId: documentData['Job ID'],
+              serviceProvided: documentData['Service Information']
+                  ['Service Provided'],
+              seenBy: documentData['Seen By'],
+              deadlineDay: deadlineDay,
+              deadlineMonth: deadlineMonth,
+              deadlineYear: deadlineYear,
+              serviceCat: documentData['Service Information']
+                  ['Service Category'],
+              charge: documentData['Service Information']['Charge'].toString(),
+              chargeRate: documentData['Service Information']['Charge Rate'],
+              rating: documentData['Work Experience & Certification']['Rating'],
+              houseNum: documentData['Address Information']['House Number'],
+              region: documentData['Address Information']['Region'],
+              town: documentData['Address Information']['Street'],
+              street: documentData['Address Information']['Street'],
+              expertise: documentData['Service Information']['Expertise']);
+
+          allHandymanJobUpload.add(jobUploadData);
         }
       }
     } on FirebaseException catch (e) {

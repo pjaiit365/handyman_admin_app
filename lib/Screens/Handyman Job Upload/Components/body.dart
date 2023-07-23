@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:handyman_admin_app/Components/category_item.dart';
 import 'package:handyman_admin_app/Components/customer_job_upload_item.dart';
+import 'package:handyman_admin_app/Components/handyman_job_upload_item.dart';
 import 'package:handyman_admin_app/Services/read_data.dart';
 
 import '../../../constants.dart';
@@ -15,7 +16,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     ReadData readData = ReadData();
     return FutureBuilder(
-        future: readData.getAllCustomerJobUploads(),
+        future: readData.getAllHandymanJobUploads(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return SingleChildScrollView(
@@ -32,12 +33,12 @@ class Body extends StatelessWidget {
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return CustomerJobUploadItem(index: index);
+                          return HandymanJobUploadItem(index: index);
                         },
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 30 * screenHeight);
                         },
-                        itemCount: allCustomerJobUpload.length),
+                        itemCount: allHandymanJobUpload.length),
                   ],
                 ),
               ),

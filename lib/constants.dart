@@ -58,3 +58,8 @@ List<Widget> dashboardItemScreen = [
   CustomerJobUploadScreen(),
   HandymanJobUploadScreen(),
 ];
+
+int handymanJobUploadSelectedIndex = 0;
+int customerJobUploadSelectedIndex = 0;
+int userSelectedIndex = 0;
+int categorySelectedIndex = 0;
