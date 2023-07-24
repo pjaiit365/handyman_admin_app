@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -111,7 +113,7 @@ class CategoryItem extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20)),
                                 content: const Center(
                                   child: Text(
-                                    'User successfully deleted!',
+                                    'Category successfully deleted!',
                                   ),
                                 ),
                               )),
@@ -149,6 +151,16 @@ class CategoryItem extends StatelessWidget {
       endActionPane: ActionPane(motion: StretchMotion(), children: <Widget>[
         SlidableAction(
           borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(2),
+            bottomLeft: Radius.circular(2),
+          ),
+          onPressed: (context) {},
+          backgroundColor: Colors.blue,
+          foregroundColor: white,
+          icon: Icons.edit_note_rounded,
+        ),
+        SlidableAction(
+          borderRadius: BorderRadius.only(
             topRight: Radius.circular(9),
             bottomRight: Radius.circular(9),
           ),
@@ -159,7 +171,7 @@ class CategoryItem extends StatelessWidget {
         ),
       ]),
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           categorySelectedIndex = index;
         },
         child: Container(

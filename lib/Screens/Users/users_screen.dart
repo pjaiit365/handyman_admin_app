@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../Components/default_back_button.dart';
 import '../../constants.dart';
 import '../Users/Components/body.dart';
 
@@ -10,6 +11,7 @@ class UsersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: DefaultBackButton(),
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: Text(

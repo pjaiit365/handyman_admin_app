@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:handyman_admin_app/constants.dart';
+import 'package:lottie/lottie.dart';
 
 class DashboardItem extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final String icon;
   final Widget screen;
 
   const DashboardItem({
@@ -44,11 +45,7 @@ class DashboardItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Icon(
-                icon,
-                color: primary,
-                size: 35,
-              ),
+              Lottie.asset(icon, height: 55, width: 55),
               SizedBox(height: 5 * screenHeight),
               Text(
                 title,

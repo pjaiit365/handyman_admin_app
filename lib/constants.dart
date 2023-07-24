@@ -46,11 +46,11 @@ List<String> dashboardItemTitle = [
   'Customer Job Upload',
   'Handyman Job Upload'
 ];
-List<IconData> dashboardItemIcon = [
-  Icons.person_outline_rounded,
-  Icons.category_rounded,
-  Icons.work_history_rounded,
-  Icons.handyman_rounded,
+List<String> dashboardItemIcon = [
+  'assets/icons/user.json',
+  'assets/icons/category.json',
+  'assets/icons/job.json',
+  'assets/icons/job.json',
 ];
 List<Widget> dashboardItemScreen = [
   UsersScreen(),

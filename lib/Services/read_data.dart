@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:handyman_admin_app/Models/category.dart';
 import 'package:handyman_admin_app/Models/customer_job_upload.dart';
@@ -14,11 +15,13 @@ List<dynamic> allHandymanJobUpload = [];
 class ReadData {
   Future getUserData() async {
     allUsers.clear();
+    print(loggedInUserId);
 
     try {
       final querySnapshot = await FirebaseFirestore.instance
           .collection('users')
-          .where('User ID', isNotEqualTo: loggedInUserId)
+          .where('User ID',
+              isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get();
       if (querySnapshot.docs.isNotEmpty) {
         for (var document in querySnapshot.docs) {
